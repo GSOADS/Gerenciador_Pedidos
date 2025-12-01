@@ -63,5 +63,34 @@ async function listOrders(req, res) {
   }
 }
 
+async function deleteOrder(req, res) {
+  try {
+    const { orderId } = req.params;
 
-module.exports = { createOrder,getOrderById,listOrders };
+    if (!orderId) {
+      return res.status(400).json({ error: "Parâmetro 'orderId' é obrigatório" });
+    }
+
+    // Verifica se o pedido existe
+    const order = await Order.findOne({ orderId });
+    if (!order) {
+      return res.status(404).json({ error: "Pedido não encontrado" });
+    }
+
+    // Remove o pedido
+    await Order.deleteOne({ orderId });
+
+    // Remove os itens relacionados
+    await Item.deleteMany({ orderId });
+
+    res.status(200).json({ message: `Pedido ${orderId} e seus itens foram deletados com sucesso` });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Erro ao deletar pedido" });
+  }
+}
+
+
+
+
+module.exports = { createOrder,getOrderById,listOrders,deleteOrder };
