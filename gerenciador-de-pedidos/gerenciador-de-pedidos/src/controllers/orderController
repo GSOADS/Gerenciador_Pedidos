@@ -1,4 +1,7 @@
 const orderService = require("../services/orderService");
+const Item = require("../models/items");
+const Order = require("../models/order");
+
 
 async function createOrder(req, res) {
   try {
@@ -17,5 +20,27 @@ async function createOrder(req, res) {
     res.status(500).json({ error: "Erro ao criar pedido" });
   }
 }
+async function getOrderById(req, res) {
+  try {
+    const { orderId } = req.params;
 
-module.exports = { createOrder };
+    if (!orderId) {
+      return res.status(400).json({ error: "Parâmetro 'orderId' é obrigatório" });
+    }
+
+    const order = await Order.findOne({ orderId: orderId });
+
+    if (!order) {
+      return res.status(404).json({ error: "Pedido não encontrado" });
+    }
+
+    const items = await Item.find({ orderId: orderId });
+
+    res.status(200).json({ order, items });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Erro ao buscar pedido" });
+  }
+}
+
+module.exports = { createOrder,getOrderById };

@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 // Schema da coleção Order
 const orderSchema = new mongoose.Schema({
   orderId: {
-    type: Number,
+    type: String,
     required: true,
     unique: true
   },

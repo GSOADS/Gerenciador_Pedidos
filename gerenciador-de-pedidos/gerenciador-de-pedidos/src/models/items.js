@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 
 // Schema da coleção Item
 const itemSchema = new mongoose.Schema({
+  orderId: {
+    type: String,
+    required: true,
+    unique: true
+  },
   productId: {
     type: Number,
     required: true
