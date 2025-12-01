@@ -1,0 +1,21 @@
+const orderService = require("../services/orderService");
+
+async function createOrder(req, res) {
+  try {
+    const { orderId, value, creationDate, items } = req.body;
+
+    if (!orderId || !value || !items || items.length === 0) {
+      return res.status(400).json({ error: "Dados inválidos" });
+    }
+
+    const orderData = { orderId, value, creationDate };
+    const result = await orderService.createOrder(orderData, items);
+
+    res.status(201).json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Erro ao criar pedido" });
+  }
+}
+
+module.exports = { createOrder };
