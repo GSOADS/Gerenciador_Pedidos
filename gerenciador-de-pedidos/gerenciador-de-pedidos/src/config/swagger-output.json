@@ -1,0 +1,83 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Gerenciador de Pedidos API",
+    "description": "API para gerenciar pedidos e itens",
+    "version": "1.0.0"
+  },
+  "host": "localhost:3000",
+  "basePath": "/",
+  "schemes": ["http"],
+  "paths": {
+    "/order": {
+      "post": {
+        "summary": "Criar um novo pedido",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "orderId": { "type": "string", "example": "v10089016vdb" },
+                "value": { "type": "number", "example": 150.00 },
+                "creationDate": { "type": "string", "format": "date-time", "example": "2025-12-01T15:30:00Z" },
+                "items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "productId": { "type": "number", "example": 101 },
+                      "quantity": { "type": "number", "example": 2 },
+                      "price": { "type": "number", "example": 50.00 }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": { "description": "Created" },
+          "400": { "description": "Bad Request" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/order/{orderId}": {
+      "get": {
+        "summary": "Buscar pedido por ID",
+        "parameters": [
+          { "name": "orderId", "in": "path", "required": true, "type": "string" }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "400": { "description": "Bad Request" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      },
+      "delete": {
+        "summary": "Deletar pedido por ID",
+        "parameters": [
+          { "name": "orderId", "in": "path", "required": true, "type": "string" }
+        ],
+        "responses": {
+          "200": { "description": "OK" },
+          "400": { "description": "Bad Request" },
+          "404": { "description": "Not Found" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    },
+    "/order/list": {
+      "get": {
+        "summary": "Listar todos os pedidos",
+        "responses": {
+          "200": { "description": "OK" },
+          "500": { "description": "Internal Server Error" }
+        }
+      }
+    }
+  }
+}
